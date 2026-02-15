@@ -1,47 +1,157 @@
 # CodeSaarthi AI - System Design Document
 
-## Document Information
+## 1. High-Level Architecture
 
-**Version:** 1.0  
-**Last Updated:** February 15, 2026  
-**Document Owner:** Engineering Architecture Team  
-**Status:** Approved for Implementation
+CodeSaarthi follows a layered, cloud-native architecture:
 
----
-
-## Table of Contents
-
-1. [Executive Summary](#1-executive-summary)
-2. [Architecture Overview](#2-architecture-overview)
-3. [System Components](#3-system-components)
-4. [Data Architecture](#4-data-architecture)
-5. [Core Workflows](#5-core-workflows)
-6. [API Design](#6-api-design)
-7. [Security Architecture](#7-security-architecture)
-8. [Scalability & Performance](#8-scalability--performance)
-9. [Monitoring & Observability](#9-monitoring--observability)
-10. [Deployment Architecture](#10-deployment-architecture)
-11. [Design Decisions & Trade-offs](#11-design-decisions--trade-offs)
-12. [Future Architecture Evolution](#12-future-architecture-evolution)
+Client Layer
+→ Application Layer
+→ Code Intelligence Engine
+→ Knowledge Layer
+→ AI Reasoning Layer
 
 ---
 
-## 1. Executive Summary
+## 2. System Components
 
-CodeSaarthi AI employs a modern, cloud-native architecture built on AWS services, combining graph-based knowledge representation with vector embeddings to deliver intelligent code comprehension capabilities. The system follows a layered architecture pattern with clear separation of concerns, enabling independent scaling, maintainability, and extensibility.
+### 2.1 Client Layer
+- React Web Application
+- VS Code Extension (optional)
 
-### 1.1 Architecture Principles
-
-- **Microservices-Oriented:** Loosely coupled services with well-defined interfaces
-- **Serverless-First:** Leverage managed services to minimize operational overhead
-- **Hybrid Intelligence:** Combine graph traversal with semantic search for comprehensive code understanding
-- **API-Driven:** All functionality exposed through RESTful APIs
-- **Security by Design:** Zero-trust architecture with defense-in-depth
-- **Developer Experience:** Minimize latency and maximize relevance in all interactions
+Responsibilities:
+- User authentication
+- Natural language query interface
+- Architecture visualization
+- Impact analysis display
 
 ---
 
-## 2. Architecture Overview
+### 2.2 Application Layer (FastAPI)
 
-### 2.1 Logical Architecture
+Responsibilities:
+- API routing
+- Authentication
+- Query orchestration
+- Context assembly for LLM
+- Response formatting
 
+Runs on:
+- AWS Lambda / ECS
+
+---
+
+### 2.3 Code Intelligence Engine
+
+Responsible for repository processing:
+
+1. Repository Ingestion
+2. AST Parsing
+3. Dependency Extraction
+4. Call Graph Generation
+5. Feature Flow Mapping
+
+Output:
+- Structured metadata
+- Relationship graph
+- Code chunks for embedding
+
+---
+
+### 2.4 Knowledge Layer
+
+Hybrid storage model:
+
+#### Graph Database (Amazon Neptune)
+Stores:
+- Module relationships
+- Function dependencies
+- API flow mappings
+
+#### Vector Database (OpenSearch)
+Stores:
+- Code embeddings
+- Semantic search index
+
+#### Object Storage (S3)
+Stores:
+- Repository snapshots
+- Parsed artifacts
+
+---
+
+### 2.5 AI Reasoning Layer
+
+Uses AWS Bedrock for:
+
+- Context-aware explanations
+- Feature flow reasoning
+- Change impact summaries
+- Documentation generation
+
+Pipeline:
+1. User query
+2. Retrieve relevant graph + vector data
+3. Build structured prompt
+4. Generate response via LLM
+5. Post-process and return result
+
+---
+
+## 3. Data Flow
+
+1. User connects repository
+2. Repository analyzed and indexed
+3. Graph + embeddings generated
+4. User submits query
+5. Relevant context retrieved
+6. LLM generates explanation
+7. Response delivered to user
+
+---
+
+## 4. Change Impact Design
+
+Steps:
+- Identify selected function
+- Traverse dependency graph
+- Detect direct and indirect callers
+- Evaluate affected modules
+- Generate risk assessment summary
+
+---
+
+## 5. Scalability Strategy
+
+- Serverless compute via AWS Lambda
+- Stateless API design
+- Independent scaling of vector and graph layers
+- Async processing for large repositories
+
+---
+
+## 6. Security Considerations
+
+- Repository access token encryption
+- Role-based access control
+- Secure API Gateway routing
+- No persistent storage of sensitive source code (optional enterprise config)
+
+---
+
+## 7. Future Enhancements
+
+- Multi-repository support
+- Team knowledge tracking
+- Personalized learning insights
+- CI/CD pipeline integration
+- Code quality scoring
+
+---
+
+## 8. Design Principles
+
+- Architecture-aware AI (not file-level only)
+- Hybrid Graph + Vector intelligence
+- Serverless and scalable
+- Developer-first UX
+- Minimal friction onboarding
