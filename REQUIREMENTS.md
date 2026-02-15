@@ -263,5 +263,3 @@ These challenges result in extended ramp-up periods (4-8 weeks on average), incr
 
 **Document Version:** 1.0  
 **Last Updated:** February 15, 2026  
-**Document Owner:** Product Management  
-**Review Cycle:** Quarterly
